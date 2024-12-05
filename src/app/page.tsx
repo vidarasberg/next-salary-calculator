@@ -1,101 +1,83 @@
-import Image from "next/image";
+"use client"
+
+import { useState } from "react";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [hours, setHours] = useState(160);
+  const [hourlyRate, setHourlyRate] = useState(1000);
+  const [grossSalary, setGrossSalary] = useState(55000);
+  const [pension, setPension] = useState(3000);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const pensionTax = pension * 0.2426;
+
+  const debitering = hours * hourlyRate;
+  const monthlyIncome = debitering * 0.7;
+
+  const employerFee = grossSalary * 0.3142;
+
+  const totalMonthlyCost = grossSalary + pension + pensionTax + employerFee;
+
+  const remaining = monthlyIncome - totalMonthlyCost;
+
+  return (
+    <div className="flex items-center justify-center">
+
+      <div className="flex flex-col p-4 gap-2">
+        <h1>Lönekalkylator</h1>
+        <div className="flex flex-col card" id="inputContainer">
+          <h2>Intäkter / Debitering</h2>
+          <div className="flex flex-wrap">
+            <label htmlFor="timmar">Debiterade timmar</label>
+            <div>
+              <input id="timmar" type="number" value={hours} onChange={e => setHours(Number(e.target.value))} min="0" className="pill" />
+              <span className="ps-1">h/månad</span>
+            </div>
+          </div>
+          <div className="flex flex-wrap">
+            <label htmlFor="timarvode">Timarvode</label>
+            <div>
+              <input id="timarvode" type="number" value={hourlyRate} onChange={e => setHourlyRate(Number(e.target.value))} min="0" className="pill" />
+              <span className="ps-1">kr</span>
+            </div>
+          </div>
+          <div className="flex flex-wrap">
+            <label htmlFor="monthlyIncome">Månadsintäkt</label>
+            <span id="monthlyIncome">{monthlyIncome}</span>
+          </div>
+          <h2>Löneuttag / Andra utgifter</h2>
+          <div className="flex flex-wrap">
+            <label htmlFor="bruttolön">Bruttolön</label>
+            <div>
+              <input id="bruttolön" type="number" value={grossSalary} onChange={e => setGrossSalary(Number(e.target.value))} min="0" className="pill" />
+              <span>kr/månad</span>
+            </div>
+          </div>
+          <div className="flex flex-wrap">
+            <label htmlFor="employerFee">Arbetsgivaravgift</label>
+            <span id="employerFee">{employerFee}</span>
+          </div>
+          <div className="flex flex-wrap">
+            <label htmlFor="pension">Pension</label>
+            <div>
+              <input id="pension" type="number" value={pension} onChange={e => setPension(Number(e.target.value))} min="0" className="pill" />
+              <span>kr/månad</span>
+            </div>
+          </div>
+          <div className="flex flex-wrap">
+            <label htmlFor="pensionTax">Skatt för pension</label>
+            <span id="pensionTax">{pensionTax}</span>
+          </div>
+          <div className="flex flex-wrap">
+            <label htmlFor="totalMonthlyCost">Total kostnad (löneuttag + pension)</label>
+            <span id="totalMonthlyCost">{totalMonthlyCost}</span>
+          </div>
+          <div className="flex flex-wrap">
+            <label htmlFor="remaining">Kvar i potten varje månad</label>
+            <span id="remaining">{remaining}</span>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+
     </div>
   );
 }
