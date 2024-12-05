@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react";
+import CalculatorInput from "./calculatorInput";
 
 export default function Home() {
   const [hours, setHours] = useState(160);
@@ -26,6 +27,7 @@ export default function Home() {
         <h1>Lönekalkylator</h1>
         <div className="flex flex-col card" id="inputContainer">
           <h2>Intäkter / Debitering</h2>
+          <CalculatorInput label="label prop" defaultValue={123} />
           <div className="flex flex-wrap">
             <label htmlFor="timmar">Debiterade timmar</label>
             <div>
