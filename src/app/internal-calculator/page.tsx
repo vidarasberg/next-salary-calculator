@@ -1,9 +1,9 @@
 "use client";
 
 import { ChangeEvent, useState } from "react";
-import CalculatorInput from "./components/calculatorInput";
+import CalculatorInput from "../components/calculatorInput";
 
-export default function Home() {
+export default function InternalCalculator() {
   const [hours, setHours] = useState(160);
   const [hourlyRate, setHourlyRate] = useState(1000);
   const [grossSalary, setGrossSalary] = useState(55000);
