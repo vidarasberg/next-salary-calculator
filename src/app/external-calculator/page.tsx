@@ -2,6 +2,7 @@
 
 import { ChangeEvent, useState } from "react";
 import CalculatorInput from "../components/calculatorInput";
+import RoundedValue from "../components/roundedValue";
 
 export default function ExternalCalculator() {
   const [hours, setHours] = useState(160);
@@ -58,7 +59,7 @@ export default function ExternalCalculator() {
             description="kr/timme"
             onChange={handleHourlyRateChanged}
           />
-          <div>Månadsintäkt: {monthlyIncome}</div>
+          <RoundedValue label="Månadsintäkt" value={monthlyIncome} />
           <h2 className="text-xl">Löneuttag / Andra utgifter</h2>
           <CalculatorInput
             id="grossSalary"
@@ -67,7 +68,7 @@ export default function ExternalCalculator() {
             description="kr/månad"
             onChange={handleGrossSalaryChanged}
           />
-          <div>Arbetsgivaravgift: {employerFee}</div>
+          <RoundedValue label="Arbetsgivaravgift" value={employerFee} />
           <CalculatorInput
             id="pension"
             label="Pension"
@@ -75,9 +76,9 @@ export default function ExternalCalculator() {
             description="kr/månad"
             onChange={handlePensionChanged}
           />
-          <div>Skatt för pension: {pensionTax}</div>
-          <div>Total kostnad (löneuttag + pension): {totalMonthlyCost}</div>
-          <div>Kvar i potten varje månad: {remaining}</div>
+          <RoundedValue label="Skatt för pension" value={pensionTax} />
+          <RoundedValue label="Total kostnad (löneuttag + pension)" value={totalMonthlyCost} />
+          <RoundedValue label="Kvar i potten varje månad" value={remaining} />
         </div>
       </div>
     </div>
