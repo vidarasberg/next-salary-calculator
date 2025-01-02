@@ -30,7 +30,7 @@ export default function ExternalCalculator() {
   }
 
   function handleGrossSalaryChanged(
-    event: ChangeEvent<HTMLInputElement>
+    event: ChangeEvent<HTMLInputElement>,
   ): void {
     setGrossSalary(Number(event.target.value));
   }
@@ -41,7 +41,7 @@ export default function ExternalCalculator() {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="flex flex-col p-4 gap-2">
+      <div className="flex flex-col gap-2 p-4">
         <h1 className="text-2xl">Lönekalkylator</h1>
         <div className="flex flex-col gap-4">
           <h2 className="text-xl">Intäkter / Debitering</h2>
@@ -77,7 +77,10 @@ export default function ExternalCalculator() {
             onChange={handlePensionChanged}
           />
           <RoundedValue label="Skatt för pension" value={pensionTax} />
-          <RoundedValue label="Total kostnad (löneuttag + pension)" value={totalMonthlyCost} />
+          <RoundedValue
+            label="Total kostnad (löneuttag + pension)"
+            value={totalMonthlyCost}
+          />
           <RoundedValue label="Kvar i potten varje månad" value={remaining} />
         </div>
       </div>
