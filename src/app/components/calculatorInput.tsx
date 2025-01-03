@@ -10,9 +10,9 @@ export default function CalculatorInput(props: {
   return (
     <div>
       <label htmlFor={props.id}>{props.label}</label>
-      <div className="rounded border-2 border-gray-300">
+      <div>
         <input
-          className="w-60 p-2"
+          className="w-60 rounded border-2 border-gray-300 p-2"
           id={props.id}
           type="number"
           value={props.value}

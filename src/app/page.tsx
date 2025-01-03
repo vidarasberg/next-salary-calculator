@@ -9,16 +9,16 @@ export default function Home() {
       </p>
       <div className="flex h-screen items-center justify-evenly">
         <Link
-          href={"internal-calculator"}
-          className="rounded border-4 border-solid border-gray-600 p-4"
-        >
-          Internal
-        </Link>
-        <Link
           href={"external-calculator"}
           className="rounded border-4 border-solid border-gray-600 p-4"
         >
-          External
+          Extern / Publik
+        </Link>
+        <Link
+          href={"internal-calculator"}
+          className="rounded border-4 border-solid border-gray-600 p-4"
+        >
+          Intern / Avancerad
         </Link>
       </div>
     </div>

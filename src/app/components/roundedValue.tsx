@@ -1,7 +1,17 @@
-export default function RoundedValue(props: { label: string; value: number }) {
+export default function RoundedValue({
+  label,
+  value,
+  fractionDigits = 0,
+  suffix = "kr",
+}: {
+  label: string;
+  value: number;
+  fractionDigits?: number;
+  suffix?: string;
+}) {
   return (
     <div>
-      {props.label}: {props.value.toFixed(0)} kr
+      {label}: {value.toFixed(fractionDigits)} {suffix}
     </div>
   );
 }

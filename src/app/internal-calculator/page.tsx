@@ -3,23 +3,35 @@
 import { ChangeEvent, useState } from "react";
 import CalculatorInput from "../components/calculatorInput";
 import RoundedValue from "../components/roundedValue";
+import { Percentages } from "../constants";
 
 export default function InternalCalculator() {
   const [hours, setHours] = useState(160);
   const [hourlyRate, setHourlyRate] = useState(1000);
   const [grossSalary, setGrossSalary] = useState(55000);
   const [pension, setPension] = useState(3000);
+  const [
+    salaryFirstThreeMonthsAfterFreelance,
+    setSalaryFirstThreeMonthsAfterFreelance,
+  ] = useState(55000);
 
-  const pensionTax = pension * 0.2426;
+  const pensionTax = pension * Percentages.PensionTax;
 
   const debitering = hours * hourlyRate;
-  const monthlyIncome = debitering * 0.7;
+  const monthlyIncome = debitering * Percentages.YourCutOfThePot;
 
-  const employerFee = grossSalary * 0.3142;
+  const employerFee = grossSalary * Percentages.EmployerFee;
 
   const totalMonthlyCost = grossSalary + pension + pensionTax + employerFee;
 
   const remaining = monthlyIncome - totalMonthlyCost;
+
+  const costThreeMonths =
+    salaryFirstThreeMonthsAfterFreelance * 3 +
+    salaryFirstThreeMonthsAfterFreelance * Percentages.EmployerFee * 3;
+
+  const numberOfMonthsToHaveEnoughForFirstThreeMonthsAfterFreelance =
+    costThreeMonths / remaining;
 
   function handleHoursChanged(event: ChangeEvent<HTMLInputElement>): void {
     setHours(Number(event.target.value));
@@ -37,6 +49,12 @@ export default function InternalCalculator() {
 
   function handlePensionChanged(event: ChangeEvent<HTMLInputElement>): void {
     setPension(Number(event.target.value));
+  }
+
+  function handleSalaryFirstThreeMonthsAfterFreelance(
+    event: ChangeEvent<HTMLInputElement>,
+  ): void {
+    setSalaryFirstThreeMonthsAfterFreelance(Number(event.target.value));
   }
 
   return (
@@ -82,6 +100,26 @@ export default function InternalCalculator() {
             value={totalMonthlyCost}
           />
           <RoundedValue label="Kvar i potten varje månad" value={remaining} />
+
+          <h2 className="text-xl">Tiden som egen</h2>
+          <CalculatorInput
+            id="salaryFirstThreeMonthsAfterFreelance"
+            label="Hur mycket lön vill jag plocka i månaden från Independtech de 3 första månaderna som egen"
+            value={salaryFirstThreeMonthsAfterFreelance}
+            description="kr/månad"
+            onChange={handleSalaryFirstThreeMonthsAfterFreelance}
+          />
+
+          <RoundedValue
+            label="Total cost for three months (salary and employer fee)"
+            value={costThreeMonths}
+          />
+          <RoundedValue
+            label="Tid att jobba för att få månadslönen"
+            value={numberOfMonthsToHaveEnoughForFirstThreeMonthsAfterFreelance}
+            fractionDigits={1}
+            suffix="månader"
+          />
         </div>
       </div>
     </div>
