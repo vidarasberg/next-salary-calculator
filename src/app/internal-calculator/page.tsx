@@ -1,60 +1,39 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useMemo } from "react";
 import CalculatorInput from "../components/calculatorInput";
 import RoundedValue from "../components/roundedValue";
 import { Percentages } from "../constants";
 
 export default function InternalCalculator() {
-  const [hours, setHours] = useState(160);
-  const [hourlyRate, setHourlyRate] = useState(1000);
-  const [grossSalary, setGrossSalary] = useState(55000);
-  const [pension, setPension] = useState(3000);
-  const [
-    salaryFirstThreeMonthsAfterFreelance,
-    setSalaryFirstThreeMonthsAfterFreelance,
-  ] = useState(55000);
+  const [state, setState] = useState({
+    hours: 160,
+    hourlyRate: 1000,
+    grossSalary: 55000,
+    pension: 3000,
+    salaryFirstThreeMonthsAfterFreelance: 55000,
+  });
+
+  const { hours, hourlyRate, grossSalary, pension, salaryFirstThreeMonthsAfterFreelance } = state;
 
   const pensionTax = pension * Percentages.PensionTax;
 
-  const debitering = hours * hourlyRate;
-  const monthlyIncome = debitering * Percentages.YourCutOfThePot;
-
+  const monthlyIncome = useMemo(() => hours * hourlyRate * Percentages.YourCutOfThePot, [hours, hourlyRate]);
   const employerFee = grossSalary * Percentages.EmployerFee;
-
   const totalMonthlyCost = grossSalary + pension + pensionTax + employerFee;
-
   const remaining = monthlyIncome - totalMonthlyCost;
 
-  const costThreeMonths =
-    salaryFirstThreeMonthsAfterFreelance * 3 +
-    salaryFirstThreeMonthsAfterFreelance * Percentages.EmployerFee * 3;
+  const costThreeMonths = useMemo(() => 
+    salaryFirstThreeMonthsAfterFreelance * 3 + 
+    salaryFirstThreeMonthsAfterFreelance * Percentages.EmployerFee * 3, 
+    [salaryFirstThreeMonthsAfterFreelance]
+  );
 
-  const numberOfMonthsToHaveEnoughForFirstThreeMonthsAfterFreelance =
-    costThreeMonths / remaining;
+  const numberOfMonthsToHaveEnoughForFirstThreeMonthsAfterFreelance = costThreeMonths / remaining;
 
-  function handleHoursChanged(event: ChangeEvent<HTMLInputElement>): void {
-    setHours(Number(event.target.value));
-  }
-
-  function handleHourlyRateChanged(event: ChangeEvent<HTMLInputElement>): void {
-    setHourlyRate(Number(event.target.value));
-  }
-
-  function handleGrossSalaryChanged(
-    event: ChangeEvent<HTMLInputElement>,
-  ): void {
-    setGrossSalary(Number(event.target.value));
-  }
-
-  function handlePensionChanged(event: ChangeEvent<HTMLInputElement>): void {
-    setPension(Number(event.target.value));
-  }
-
-  function handleSalaryFirstThreeMonthsAfterFreelance(
-    event: ChangeEvent<HTMLInputElement>,
-  ): void {
-    setSalaryFirstThreeMonthsAfterFreelance(Number(event.target.value));
+  function handleChange(event: ChangeEvent<HTMLInputElement>, field: keyof typeof state): void {
+    console.log([field]);
+    setState({ ...state, [field]: Number(event.target.value) });
   }
 
   return (
@@ -68,14 +47,14 @@ export default function InternalCalculator() {
             label="Debiterade timmar"
             value={hours}
             description="h/månad"
-            onChange={handleHoursChanged}
+            onChange={(e) => handleChange(e, 'hours')}
           />
           <CalculatorInput
             id="hourlyRate"
             label="Timarvode"
             value={hourlyRate}
             description="kr/timme"
-            onChange={handleHourlyRateChanged}
+            onChange={(e) => handleChange(e, 'hourlyRate')}
           />
           <RoundedValue label="Månadsintäkt" value={monthlyIncome} />
           <h2 className="text-xl">Löneuttag / Andra utgifter</h2>
@@ -84,7 +63,7 @@ export default function InternalCalculator() {
             label="Bruttolön"
             value={grossSalary}
             description="kr/månad"
-            onChange={handleGrossSalaryChanged}
+            onChange={(e) => handleChange(e, 'grossSalary')}
           />
           <RoundedValue label="Arbetsgivaravgift" value={employerFee} />
           <CalculatorInput
@@ -92,7 +71,7 @@ export default function InternalCalculator() {
             label="Pension"
             value={pension}
             description="kr/månad"
-            onChange={handlePensionChanged}
+            onChange={(e) => handleChange(e, 'pension')}
           />
           <RoundedValue label="Skatt för pension" value={pensionTax} />
           <RoundedValue
@@ -107,7 +86,7 @@ export default function InternalCalculator() {
             label="Hur mycket lön vill jag plocka i månaden från Independtech de 3 första månaderna som egen"
             value={salaryFirstThreeMonthsAfterFreelance}
             description="kr/månad"
-            onChange={handleSalaryFirstThreeMonthsAfterFreelance}
+            onChange={(e) => handleChange(e, 'salaryFirstThreeMonthsAfterFreelance')}
           />
 
           <RoundedValue
